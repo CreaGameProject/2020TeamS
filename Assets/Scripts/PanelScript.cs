@@ -8,10 +8,12 @@ public class PanelScript : MonoBehaviour
     
     Color32[] colors = new Color32[4];
 
-    [SerializeField]private Renderer targetRenderer;
+    private Renderer targetRenderer;
 
-    public int colorNum;
-    [System.NonSerialized]public bool Selectable;
+    [SerializeField] private GameObject item;
+
+    [System.NonSerialized] public int colorNum;
+    [System.NonSerialized] public bool Selectable;
     [System.NonSerialized] public bool panelDisappear;
 
 
@@ -26,6 +28,13 @@ public class PanelScript : MonoBehaviour
         Selectable = false;
         panelDisappear = false;
 
+        int num = Random.Range(0, 100);
+        if(num < 10)
+        {
+            item.SetActive(true);
+        }
+        
+
         colorNum = Random.Range(0, 3);
         SetColor(colorNum);
         PanelScaleUP(true);
@@ -34,14 +43,9 @@ public class PanelScript : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown("z"))
+        if (item != null)
         {
-            colorNum++;
-            if(colorNum > 2)
-            {
-                colorNum = 0;
-            }
-            targetRenderer.material.SetColor("_BaseColor", colors[colorNum]);
+            item.transform.Rotate(new Vector3(15, 30, 45) * Time.deltaTime);
         }
     }
 
@@ -77,5 +81,16 @@ public class PanelScript : MonoBehaviour
     {
         targetRenderer = this.GetComponent<Renderer>();
         targetRenderer.material.SetColor("_BaseColor", colors[colorNum]);
+    }
+
+    public void ChangeColor()
+    {
+        colorNum++;
+        if (colorNum > 2)
+        {
+            colorNum = 0;
+        }
+        targetRenderer.material.SetColor("_BaseColor", colors[colorNum]);
+        
     }
 }
