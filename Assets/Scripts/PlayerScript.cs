@@ -81,13 +81,12 @@ public class PlayerScript : MonoBehaviour
                                     if(hitInfo.collider.gameObject.tag == "Panel")
                                     {
                                         hitInfo.collider.gameObject.GetComponent<PanelScript>().PanelScaleUP(false);
-                                        
                                     }
                                 }
                             }
-
+                           
                             stageManager.GetComponent<StageManager>().StartCoroutine("CreateNewPanel");
-
+                            
                         }
 
                     }
@@ -128,11 +127,13 @@ public class PlayerScript : MonoBehaviour
         {
             RaycastHit hitInfo;
 
-            if (Physics.Raycast(new Vector3(transform.position.x + panelDistance * Mathf.Cos(i * Mathf.PI / 3), transform.position.y + 2f, transform.position.z + panelDistance * Mathf.Sin(i * Mathf.PI / 3)),
-                Vector3.down, out hitInfo, 20f))
+            if (Physics.Raycast(new Vector3(transform.position.x + panelDistance * Mathf.Cos(i * Mathf.PI / 3), transform.position.y - 2f, transform.position.z + panelDistance * Mathf.Sin(i * Mathf.PI / 3)),
+                Vector3.up, out hitInfo, 20f))
             {
-                panel[i] = hitInfo.collider.gameObject;
-                panel[i].GetComponent<PanelScript>().PanelUP(true);
+                if (hitInfo.collider.gameObject.tag == "Panel") {
+                    panel[i] = hitInfo.collider.gameObject;
+                    panel[i].GetComponent<PanelScript>().PanelUP(true);
+                }
             }
             else
             {
@@ -146,6 +147,15 @@ public class PlayerScript : MonoBehaviour
         if(collision.gameObject.tag == "Panel")
         {
             collision.gameObject.GetComponent<PanelScript>().PanelScaleUP(false);
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.gameObject.name == "ItemChangeColor")
+        {
+            stageManager.GetComponent<StageManager>().AllPanelChangeColor();
+            Destroy(other.gameObject);
         }
     }
 
