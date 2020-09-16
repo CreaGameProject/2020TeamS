@@ -86,7 +86,16 @@ public class PlayerScript : MonoBehaviour
                             }
                            
                             stageManager.GetComponent<StageManager>().StartCoroutine("CreateNewPanel");
-                            
+                           
+                        }
+
+                        RaycastHit raycastHit;
+                        if(Physics.Raycast(new Vector3(transform.position.x , transform.position.y -2f ,transform.position.z),Vector3.up,out raycastHit, 20f))
+                        {
+                            if (raycastHit.collider.gameObject.tag == "Panel")
+                            {
+                                raycastHit.collider.gameObject.GetComponent<PanelScript>().PanelScaleUP(false);
+                            }
                         }
 
                     }
@@ -142,13 +151,14 @@ public class PlayerScript : MonoBehaviour
         }
     }
 
+    /*
     private void OnCollisionExit(Collision collision)
     {
         if(collision.gameObject.tag == "Panel")
         {
             collision.gameObject.GetComponent<PanelScript>().PanelScaleUP(false);
         }
-    }
+    }*/
 
     private void OnTriggerEnter(Collider other)
     {
