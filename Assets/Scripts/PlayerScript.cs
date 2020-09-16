@@ -151,14 +151,7 @@ public class PlayerScript : MonoBehaviour
         }
     }
 
-    /*
-    private void OnCollisionExit(Collision collision)
-    {
-        if(collision.gameObject.tag == "Panel")
-        {
-            collision.gameObject.GetComponent<PanelScript>().PanelScaleUP(false);
-        }
-    }*/
+   
 
     private void OnTriggerEnter(Collider other)
     {
