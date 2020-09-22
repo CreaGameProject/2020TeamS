@@ -25,10 +25,11 @@ public class StageManager : MonoBehaviour
     
     void Update()
     {
+        /*
         if (Input.GetKeyDown(KeyCode.Z))
         {
             AllPanelChangeColor();
-        }
+        }*/
     }
 
 
@@ -38,7 +39,7 @@ public class StageManager : MonoBehaviour
         {
             if(panelScript != null)
             {
-                panelScript.ChangeColor();
+                panelScript.ChangeTexture();
             }
         }
     }
