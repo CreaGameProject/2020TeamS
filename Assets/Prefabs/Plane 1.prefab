@@ -186,8 +186,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   textures:
   - {fileID: 2800000, guid: 7881d7424d024224a82fd5347add34dc, type: 3}
-  - {fileID: 2800000, guid: 7881d7424d024224a82fd5347add34dc, type: 3}
-  - {fileID: 2800000, guid: 7881d7424d024224a82fd5347add34dc, type: 3}
+  - {fileID: 2800000, guid: 9774c8ab658c51e43a44dc2a42b2bbf0, type: 3}
+  - {fileID: 2800000, guid: 658bf8b52d2bb2f4fa144a3215b3473b, type: 3}
   item: {fileID: 5383137039348432934}
 --- !u!64 &277269830078337841
 MeshCollider:
