@@ -50,7 +50,7 @@ public class PanelScript : MonoBehaviour
     {
         if (item != null)
         {
-            item.transform.Rotate(new Vector3(15, 30, 45) * Time.deltaTime);
+            item.transform.Rotate(new Vector3(-15, -30, -45) * Time.deltaTime);
         }
     }
 
