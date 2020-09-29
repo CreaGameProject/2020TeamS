@@ -22,7 +22,17 @@ public class PlayerScript : MonoBehaviour
     private GameObject[] panel;
     private RaycastHit mouseCursorHit;
 
- 
+
+    public enum PlayerColor
+    {
+        YELLOW,
+        RED,
+        BLUE
+    }
+
+    public PlayerColor playerColor;
+    private int playerColorNum;
+
 
 
     private void Start()
@@ -32,6 +42,19 @@ public class PlayerScript : MonoBehaviour
 
         panel = new GameObject[4];
 
+        switch (playerColor)
+        {
+            case PlayerColor.YELLOW:
+                playerColorNum = 0;
+                break;
+            case PlayerColor.RED:
+                playerColorNum = 1;
+                break;
+            case PlayerColor.BLUE:
+                playerColorNum = 2;
+                break;
+
+        }
 
         Invoke("PanelChecker", 1.0f);
     }
@@ -111,13 +134,17 @@ public class PlayerScript : MonoBehaviour
         }
         else
         {
-            moveTimer += Time.deltaTime;
+           moveTimer += Time.deltaTime;
             float location = moveTimer * moveSpeed / panelDistance;
             transform.position = Vector3.Lerp(moveStart.transform.position, moveGoal.transform.position, location);
+
+            //transform.DOMove(moveGoal.transform.position, 1.2f);
+
 
             if (transform.position == moveGoal.transform.position)
             {
                 PanelChecker();
+                
             }
         }
 
@@ -129,9 +156,13 @@ public class PlayerScript : MonoBehaviour
     void PanelChecker()
     {
         animator.SetBool("Jump", false);
-        isMoving = false;
+        
         moveTimer = 0f;
 
+        moveStart.transform.position = transform.position;
+        moveGoal.transform.position = transform.position + transform.forward * panelDistance;
+
+        //まわりの4つのパネルをチェック
         for (int i = 0; i < 4; i++)
         {
             RaycastHit hitInfo;
@@ -149,6 +180,20 @@ public class PlayerScript : MonoBehaviour
                 panel[i] = null;
             }
         }
+
+        //踏んだパネルの色をチェック
+        RaycastHit hitInfoNowPanel;
+        if (Physics.Raycast(new Vector3(transform.position.x, transform.position.y - 2f, transform.position.z), Vector3.up, out hitInfoNowPanel, 20f))
+        {
+            if (hitInfoNowPanel.collider.gameObject.tag == "Panel")
+            {
+                Debug.Log(hitInfoNowPanel.collider.gameObject.GetComponent<PanelScript>().textureNum);
+            }
+        }
+
+
+
+        isMoving = false;
     }
 
    

@@ -6,16 +6,16 @@ using DG.Tweening;
 public class PanelScript : MonoBehaviour
 {
     
-    Color32[] colors = new Color32[4];
+
 
     [SerializeField] private Texture[] textures = new Texture[3];
+    [System.NonSerialized] public int textureNum;
 
     private Renderer targetRenderer;
 
     [SerializeField] private GameObject item;
 
-    [System.NonSerialized] public int colorNum;
-    [System.NonSerialized] public int textureNum;
+    
     [System.NonSerialized] public bool Selectable;
     [System.NonSerialized] public bool panelDisappear;
 
@@ -23,10 +23,7 @@ public class PanelScript : MonoBehaviour
     private void Start()
     {
         
-        colors[0] = new Color32(255, 127, 127, 255);
-        colors[1] = new Color32(255, 255, 127, 255);
-        colors[2] = new Color32(127, 191, 255, 255);
-        colors[3] = new Color32(255, 255, 255, 255);
+        
         
         Selectable = false;
         panelDisappear = false;
@@ -37,10 +34,8 @@ public class PanelScript : MonoBehaviour
             item.SetActive(true);
         }
         
-
-        //colorNum = Random.Range(0, 3);
         textureNum = Random.Range(0, 3);
-        //SetColor(colorNum);
+
         SetTexture(textureNum);
         PanelScaleUP(true);
     }
@@ -77,27 +72,13 @@ public class PanelScript : MonoBehaviour
         else
         {
             transform.DOScale(new Vector3(0, 0, 0), 0.8f);
-            SetColor(3);
             Destroy(this.gameObject, 1.0f);
         }
     }
 
-    public void SetColor(int colorNum)
-    {
-        targetRenderer = this.GetComponent<Renderer>();
-        targetRenderer.material.SetColor("_BaseColor", colors[colorNum]);
-    }
+    
 
-    public void ChangeColor()
-    {
-        colorNum++;
-        if (colorNum > 2)
-        {
-            colorNum = 0;
-        }
-        targetRenderer.material.SetColor("_BaseColor", colors[colorNum]);
-        
-    }
+    
 
     public void SetTexture(int textureNum)
     {
