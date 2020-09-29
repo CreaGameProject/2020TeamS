@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class StageManager : MonoBehaviour
 {
+    private AudioSource audioSource;
+
     [SerializeField] GameObject plane;
 
     public int length;
@@ -20,26 +22,71 @@ public class StageManager : MonoBehaviour
     [SerializeField] private Text timerText;
 
     [System.NonSerialized] public bool isCombo;
-    private int comboTimes = 0;
+    [System.NonSerialized] public int comboTimes = 0;
     private float comboTimer = 5.0f;
     [System.NonSerialized] public int score = 0;
     [SerializeField] private Text scoreText;
 
+    [System.NonSerialized] public bool isGame = false;
+    private float countDownTimer = 3.0f;
+    private bool isCountDown = true;
+    [SerializeField] private GameObject countDownBG;
+    [SerializeField] private Text countDownText;
+    private bool isWhistle = true;
 
-
-
+    [SerializeField] private AudioClip BGM;
+    [SerializeField] private AudioClip countDownSE;
+    [SerializeField] private AudioClip whistleSE;
     void Start()
     {
         StartCoroutine("StageCreate");
         panelScripts = new List<PanelScript>();
+
+        audioSource = GetComponent<AudioSource>();
+
+        audioSource.PlayOneShot(countDownSE);
     }
 
     
     void Update()
     {
-        gameTimer -= Time.deltaTime;
+        if (isCountDown)
+        {
+            countDownTimer -= Time.deltaTime;
+            countDownText.text = countDownTimer.ToString("f0");
 
+            if(countDownTimer < 0.5f) {
+                countDownText.text = "GO";
+            }
+
+            if(countDownTimer <= 0)
+            {
+                
+
+                isCountDown = false;
+                isGame = true;
+                audioSource.PlayOneShot(BGM);
+                countDownBG.SetActive(false);
+            }
+        }
+
+        timerText.text = gameTimer.ToString("f0");
         scoreText.text = "SCORE:" + score.ToString();
+
+        if(gameTimer <= 0) {
+            isGame = false;
+            if (isWhistle)
+            {
+                audioSource.PlayOneShot(whistleSE);
+                isWhistle = false;
+            }
+        }
+        
+        if(isGame)
+        {
+            gameTimer -= Time.deltaTime;
+        }
+
 
         if (isCombo)
         {
@@ -137,7 +184,7 @@ public class StageManager : MonoBehaviour
         }
 
 
-        score += addPoint + comboTimes;
+        score += (addPoint + comboTimes) * 100;
 
         
     }
