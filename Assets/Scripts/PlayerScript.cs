@@ -71,7 +71,7 @@ public class PlayerScript : MonoBehaviour
         {
             if(mouseCursorHit.collider.gameObject.tag == "Panel")
             {
-                if (mouseCursorHit.collider.gameObject.GetComponent<PanelScript>().Selectable)
+                if (mouseCursorHit.collider.gameObject.GetComponent<PanelScript>().selectable)
                 {
                     Vector3 targetDir = mouseCursorHit.collider.gameObject.transform.position - transform.position;
                     float targetAngle = Mathf.Atan2(targetDir.z, targetDir.x);
@@ -144,7 +144,6 @@ public class PlayerScript : MonoBehaviour
             if (transform.position == moveGoal.transform.position)
             {
                 PanelChecker();
-                
             }
         }
 
@@ -187,7 +186,14 @@ public class PlayerScript : MonoBehaviour
         {
             if (hitInfoNowPanel.collider.gameObject.tag == "Panel")
             {
-                Debug.Log(hitInfoNowPanel.collider.gameObject.GetComponent<PanelScript>().textureNum);
+                if (hitInfoNowPanel.collider.gameObject.GetComponent<PanelScript>().textureNum == playerColorNum)
+                {
+                    stageManager.GetComponent<StageManager>().AddScore(3,true);
+                }
+                else
+                {
+                    stageManager.GetComponent<StageManager>().AddScore(1,false);
+                }
             }
         }
 

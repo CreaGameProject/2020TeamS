@@ -1,12 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class StageManager : MonoBehaviour
 {
     [SerializeField] GameObject plane;
-
- 
 
     public int length;
     public int width;
@@ -14,7 +13,20 @@ public class StageManager : MonoBehaviour
 
     GameObject panel;
 
-    public List<PanelScript> panelScripts;
+    [System.NonSerialized] public List<PanelScript> panelScripts;
+
+
+    private float gameTimer = 90.0f;
+    [SerializeField] private Text timerText;
+
+    [System.NonSerialized] public bool isCombo;
+    private int comboTimes = 0;
+    private float comboTimer = 5.0f;
+    [System.NonSerialized] public int score = 0;
+    [SerializeField] private Text scoreText;
+
+
+
 
     void Start()
     {
@@ -25,11 +37,18 @@ public class StageManager : MonoBehaviour
     
     void Update()
     {
-        /*
-        if (Input.GetKeyDown(KeyCode.Z))
+        gameTimer -= Time.deltaTime;
+
+        scoreText.text = "SCORE:" + score.ToString();
+
+        if (isCombo)
         {
-            AllPanelChangeColor();
-        }*/
+            comboTimer -= Time.deltaTime;
+            if(comboTimer <= 0.0f)
+            {
+                isCombo = false;
+            }
+        }
     }
 
 
@@ -97,6 +116,30 @@ public class StageManager : MonoBehaviour
     }
 
    
+    public void AddScore(int addPoint,bool combo)
+    {
 
+        if (combo && isCombo)
+        {
+            comboTimes++;
+            isCombo = true;
+            comboTimer = 5.0f;
+        }
+
+        if (combo)
+        {
+            isCombo = true;
+        }
+        else
+        {
+            comboTimes = 0;
+            isCombo = false;
+        }
+
+
+        score += addPoint + comboTimes;
+
+        
+    }
 
 }

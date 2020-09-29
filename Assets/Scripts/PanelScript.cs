@@ -16,16 +16,14 @@ public class PanelScript : MonoBehaviour
     [SerializeField] private GameObject item;
 
     
-    [System.NonSerialized] public bool Selectable;
+    [System.NonSerialized] public bool selectable;
     [System.NonSerialized] public bool panelDisappear;
 
 
     private void Start()
     {
-        
-        
-        
-        Selectable = false;
+ 
+        selectable = false;
         panelDisappear = false;
 
         int num = Random.Range(0, 100);
@@ -54,12 +52,12 @@ public class PanelScript : MonoBehaviour
         if (up)
         {
             transform.DOLocalMove(new Vector3(transform.position.x, 0.3f, transform.position.z), 0.2f);
-            Selectable = true;
+            selectable = true;
         }
         else
         {
             transform.DOLocalMove(new Vector3(transform.position.x, 0, transform.position.z), 0.2f);
-            Selectable = false;
+            selectable = false;
         }
     }
 
