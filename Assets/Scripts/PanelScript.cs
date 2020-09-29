@@ -5,30 +5,28 @@ using DG.Tweening;
 
 public class PanelScript : MonoBehaviour
 {
-    
-    Color32[] colors = new Color32[4];
+
+    [System.NonSerialized] public AudioSource audioSource;
+    [SerializeField] private AudioClip matchSE;
+    [SerializeField] private AudioClip missSE;
 
     [SerializeField] private Texture[] textures = new Texture[3];
+    [System.NonSerialized] public int textureNum;
 
     private Renderer targetRenderer;
 
     [SerializeField] private GameObject item;
 
-    [System.NonSerialized] public int colorNum;
-    [System.NonSerialized] public int textureNum;
-    [System.NonSerialized] public bool Selectable;
+    
+    [System.NonSerialized] public bool selectable;
     [System.NonSerialized] public bool panelDisappear;
 
 
     private void Start()
     {
-        
-        colors[0] = new Color32(255, 127, 127, 255);
-        colors[1] = new Color32(255, 255, 127, 255);
-        colors[2] = new Color32(127, 191, 255, 255);
-        colors[3] = new Color32(255, 255, 255, 255);
-        
-        Selectable = false;
+        audioSource = GetComponent<AudioSource>();
+
+        selectable = false;
         panelDisappear = false;
 
         int num = Random.Range(0, 100);
@@ -37,10 +35,8 @@ public class PanelScript : MonoBehaviour
             item.SetActive(true);
         }
         
-
-        //colorNum = Random.Range(0, 3);
         textureNum = Random.Range(0, 3);
-        //SetColor(colorNum);
+
         SetTexture(textureNum);
         PanelScaleUP(true);
     }
@@ -50,7 +46,7 @@ public class PanelScript : MonoBehaviour
     {
         if (item != null)
         {
-            item.transform.Rotate(new Vector3(15, 30, 45) * Time.deltaTime);
+            item.transform.Rotate(new Vector3(-15, -30, -45) * Time.deltaTime);
         }
     }
 
@@ -59,12 +55,12 @@ public class PanelScript : MonoBehaviour
         if (up)
         {
             transform.DOLocalMove(new Vector3(transform.position.x, 0.3f, transform.position.z), 0.2f);
-            Selectable = true;
+            selectable = true;
         }
         else
         {
             transform.DOLocalMove(new Vector3(transform.position.x, 0, transform.position.z), 0.2f);
-            Selectable = false;
+            selectable = false;
         }
     }
 
@@ -77,27 +73,13 @@ public class PanelScript : MonoBehaviour
         else
         {
             transform.DOScale(new Vector3(0, 0, 0), 0.8f);
-            SetColor(3);
             Destroy(this.gameObject, 1.0f);
         }
     }
 
-    public void SetColor(int colorNum)
-    {
-        targetRenderer = this.GetComponent<Renderer>();
-        targetRenderer.material.SetColor("_BaseColor", colors[colorNum]);
-    }
+    
 
-    public void ChangeColor()
-    {
-        colorNum++;
-        if (colorNum > 2)
-        {
-            colorNum = 0;
-        }
-        targetRenderer.material.SetColor("_BaseColor", colors[colorNum]);
-        
-    }
+    
 
     public void SetTexture(int textureNum)
     {
@@ -113,5 +95,19 @@ public class PanelScript : MonoBehaviour
             textureNum = 0;
         }
         targetRenderer.material.SetTexture("_BaseMap", textures[textureNum]);
+    }
+
+
+    public void PanelSE(bool match)
+    {
+        if (match)
+        {
+            audioSource.PlayOneShot(matchSE);
+        }
+        else
+        {
+            audioSource.PlayOneShot(missSE);
+        }
+        
     }
 }

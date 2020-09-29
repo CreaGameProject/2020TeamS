@@ -6,7 +6,8 @@ using DG.Tweening;
 public class PlayerScript : MonoBehaviour
 {
 
-    Animator animator;
+    private Animator animator;
+    private AudioSource audioSource;
 
     [SerializeField] private GameObject moveStart;
     [SerializeField] private GameObject moveGoal;
@@ -21,8 +22,25 @@ public class PlayerScript : MonoBehaviour
     private float panelDistance = 1.75f;
     private GameObject[] panel;
     private RaycastHit mouseCursorHit;
+    private Vector3 targetDir;
 
- 
+    [SerializeField] private AudioClip jumpSE;
+    [SerializeField] private AudioClip getItemSE;
+    [SerializeField] private AudioClip cursorSE;
+
+
+
+
+    public enum PlayerColor
+    {
+        YELLOW,
+        RED,
+        BLUE
+    }
+
+    public PlayerColor playerColor;
+    private int playerColorNum;
+
 
 
     private void Start()
@@ -30,8 +48,23 @@ public class PlayerScript : MonoBehaviour
         animator = GetComponent<Animator>();
         animator.SetBool("Run", true);
 
+        audioSource = GetComponent<AudioSource>();
+
         panel = new GameObject[4];
 
+        switch (playerColor)
+        {
+            case PlayerColor.YELLOW:
+                playerColorNum = 0;
+                break;
+            case PlayerColor.RED:
+                playerColorNum = 1;
+                break;
+            case PlayerColor.BLUE:
+                playerColorNum = 2;
+                break;
+
+        }
 
         Invoke("PanelChecker", 1.0f);
     }
@@ -41,69 +74,82 @@ public class PlayerScript : MonoBehaviour
     private void Update()
     {
 
-        //StagePanelSelect
-        Ray mouseCursorRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-        
-        if(Physics.Raycast(mouseCursorRay,out mouseCursorHit))
+
+        if (stageManager.GetComponent<StageManager>().isGame)
         {
-            if(mouseCursorHit.collider.gameObject.tag == "Panel")
+
+            //StagePanelSelect
+            Ray mouseCursorRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+            if (Physics.Raycast(mouseCursorRay, out mouseCursorHit))
             {
-                if (mouseCursorHit.collider.gameObject.GetComponent<PanelScript>().Selectable)
+                if (mouseCursorHit.collider.gameObject.tag == "Panel")
                 {
-                    Vector3 targetDir = mouseCursorHit.collider.gameObject.transform.position - transform.position;
-                    float targetAngle = Mathf.Atan2(targetDir.z, targetDir.x);
-                    targetAngle = -1 * Mathf.Rad2Deg * targetAngle + 90f;
-
-                    transform.rotation = Quaternion.Euler(0, targetAngle, 0);
-
-                    //Click to move
-                    if (Input.GetMouseButtonDown(0))
+                    if (mouseCursorHit.collider.gameObject.GetComponent<PanelScript>().selectable)
                     {
-                        animator.SetBool("Jump", true);
-                        isMoving = true;
 
-                        for (int i = 0; i < 4; i++)
+                        
+                        if (targetDir != mouseCursorHit.collider.gameObject.transform.position - transform.position)
                         {
-                            if (panel[i] != null)
-                            {
-                                panel[i].GetComponent<PanelScript>().PanelUP(false);
-                            }
+                            targetDir = mouseCursorHit.collider.gameObject.transform.position - transform.position;
+                            audioSource.PlayOneShot(cursorSE);
                         }
+                        float targetAngle = Mathf.Atan2(targetDir.z, targetDir.x);
+                        targetAngle = -1 * Mathf.Rad2Deg * targetAngle + 90f;
 
-                        //When go forward
-                        if(targetAngle <= 40.0f && targetAngle >= -40.0f)
+                        transform.rotation = Quaternion.Euler(0, targetAngle, 0);
+
+                        
+
+                        //Click to move
+                        if (Input.GetMouseButtonDown(0))
                         {
-                            RaycastHit hitInfo;
-                            for(int i = 0; i < 5; i++)
+                            animator.SetBool("Jump", true);
+                            isMoving = true;
+
+                            for (int i = 0; i < 4; i++)
                             {
-                                if(Physics.Raycast(new Vector3(0.4375f + i * 1.75f,1f,transform.position.z),Vector3.down, out hitInfo, 20f))
+                                if (panel[i] != null)
                                 {
-                                    if(hitInfo.collider.gameObject.tag == "Panel")
-                                    {
-                                        hitInfo.collider.gameObject.GetComponent<PanelScript>().PanelScaleUP(false);
-                                    }
+                                    panel[i].GetComponent<PanelScript>().PanelUP(false);
                                 }
                             }
-                           
-                            stageManager.GetComponent<StageManager>().StartCoroutine("CreateNewPanel");
-                           
-                        }
 
-                        RaycastHit raycastHit;
-                        if(Physics.Raycast(new Vector3(transform.position.x , transform.position.y -2f ,transform.position.z),Vector3.up,out raycastHit, 20f))
-                        {
-                            if (raycastHit.collider.gameObject.tag == "Panel")
+                            //When go forward
+                            if (targetAngle <= 40.0f && targetAngle >= -40.0f)
                             {
-                                raycastHit.collider.gameObject.GetComponent<PanelScript>().PanelScaleUP(false);
-                            }
-                        }
+                                RaycastHit hitInfo;
+                                for (int i = 0; i < 5; i++)
+                                {
+                                    if (Physics.Raycast(new Vector3(0.4375f + i * 1.75f, 1f, transform.position.z), Vector3.down, out hitInfo, 20f))
+                                    {
+                                        if (hitInfo.collider.gameObject.tag == "Panel")
+                                        {
+                                            hitInfo.collider.gameObject.GetComponent<PanelScript>().PanelScaleUP(false);
+                                        }
+                                    }
+                                }
 
+                                stageManager.GetComponent<StageManager>().StartCoroutine("CreateNewPanel");
+
+                                audioSource.PlayOneShot(jumpSE);
+                            }
+
+                            RaycastHit raycastHit;
+                            if (Physics.Raycast(new Vector3(transform.position.x, transform.position.y - 2f, transform.position.z), Vector3.up, out raycastHit, 20f))
+                            {
+                                if (raycastHit.collider.gameObject.tag == "Panel")
+                                {
+                                    raycastHit.collider.gameObject.GetComponent<PanelScript>().PanelScaleUP(false);
+                                }
+                            }
+
+                        }
                     }
                 }
             }
+
         }
-
-
 
         if (!isMoving) {
             moveStart.transform.position = transform.position;
@@ -111,9 +157,12 @@ public class PlayerScript : MonoBehaviour
         }
         else
         {
-            moveTimer += Time.deltaTime;
+           moveTimer += Time.deltaTime;
             float location = moveTimer * moveSpeed / panelDistance;
             transform.position = Vector3.Lerp(moveStart.transform.position, moveGoal.transform.position, location);
+
+            //transform.DOMove(moveGoal.transform.position, 1.2f);
+
 
             if (transform.position == moveGoal.transform.position)
             {
@@ -129,9 +178,13 @@ public class PlayerScript : MonoBehaviour
     void PanelChecker()
     {
         animator.SetBool("Jump", false);
-        isMoving = false;
+        
         moveTimer = 0f;
 
+        moveStart.transform.position = transform.position;
+        moveGoal.transform.position = transform.position + transform.forward * panelDistance;
+
+        //まわりの4つのパネルをチェック
         for (int i = 0; i < 4; i++)
         {
             RaycastHit hitInfo;
@@ -149,6 +202,40 @@ public class PlayerScript : MonoBehaviour
                 panel[i] = null;
             }
         }
+
+
+        //踏んだパネルの色をチェック
+
+        if (stageManager.GetComponent<StageManager>().isGame)
+        {
+            RaycastHit hitInfoNowPanel;
+            if (Physics.Raycast(new Vector3(transform.position.x, transform.position.y - 2f, transform.position.z), Vector3.up, out hitInfoNowPanel, 20f))
+            {
+                if (hitInfoNowPanel.collider.gameObject.tag == "Panel")
+                {
+
+                    
+
+                    if (hitInfoNowPanel.collider.gameObject.GetComponent<PanelScript>().textureNum == playerColorNum)
+                    {
+                        
+                        stageManager.GetComponent<StageManager>().AddScore(3, true);
+                        hitInfoNowPanel.collider.gameObject.GetComponent<PanelScript>().audioSource.pitch = 1.0f + 0.1f * stageManager.GetComponent<StageManager>().comboTimes;
+                        hitInfoNowPanel.collider.gameObject.GetComponent<PanelScript>().PanelSE(true);
+                    }
+                    else
+                    {
+                        
+                        stageManager.GetComponent<StageManager>().AddScore(1, false);
+                        hitInfoNowPanel.collider.gameObject.GetComponent<PanelScript>().audioSource.pitch = 1.0f;
+                        hitInfoNowPanel.collider.gameObject.GetComponent<PanelScript>().PanelSE(false);
+                    }
+                }
+            }
+
+        }
+
+        isMoving = false;
     }
 
    
@@ -159,6 +246,7 @@ public class PlayerScript : MonoBehaviour
         {
             stageManager.GetComponent<StageManager>().AllPanelChangeColor();
             Destroy(other.gameObject);
+            audioSource.PlayOneShot(getItemSE);
         }
     }
 
