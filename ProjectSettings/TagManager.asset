@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Panel
   - Item
+  - CharaImage
   layers:
   - Default
   - TransparentFX

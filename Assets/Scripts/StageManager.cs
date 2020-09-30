@@ -243,7 +243,7 @@ public class StageManager : MonoBehaviour
         }
 
 
-        score += (addPoint + comboTimes) * 100;
+        score += (5 * addPoint + comboTimes) * 20;
 
         
     }
