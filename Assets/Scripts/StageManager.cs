@@ -37,14 +37,41 @@ public class StageManager : MonoBehaviour
     [SerializeField] private AudioClip BGM;
     [SerializeField] private AudioClip countDownSE;
     [SerializeField] private AudioClip whistleSE;
+
+    public enum PlayerColor
+    {
+        YELLOW,
+        RED,
+        BLUE
+    }
+
+    public PlayerColor playerColor;
+    private int playerColorNum;
+
+    [SerializeField] private GameObject playerYellow;
+    [SerializeField] private GameObject playerRed;
+    [SerializeField] private GameObject playerBlue;
+    [SerializeField] private Sprite[] playerSprites;
+    [SerializeField] private Image charaImage;
+    [SerializeField] private Image subColorTimerBG;
+    [SerializeField] private Image subColorCountDownBG;
+    [SerializeField] private Image cloud;
+    private Color playerColorMain;
+    private Color playerColorSub;
+
     void Start()
     {
+
+        SetStageColor();
+
         StartCoroutine("StageCreate");
         panelScripts = new List<PanelScript>();
 
         audioSource = GetComponent<AudioSource>();
 
         audioSource.PlayOneShot(countDownSE);
+
+
     }
 
     
@@ -98,6 +125,38 @@ public class StageManager : MonoBehaviour
         }
     }
 
+
+    private void SetStageColor()
+    {
+
+        switch (playerColor)
+        {
+            case PlayerColor.YELLOW:
+                playerColorMain = new Color32(255, 206, 140, 255);
+                playerColorSub = new Color32(228, 149, 148, 255);
+                playerYellow.SetActive(true);
+                charaImage.sprite = playerSprites[0];
+                break;
+
+            case PlayerColor.RED:
+                playerColorMain = new Color32(231, 130, 156, 255);
+                playerColorSub = new Color32(146, 111, 183, 255);
+                playerRed.SetActive(true);
+                charaImage.sprite = playerSprites[1];
+                break;
+
+            case PlayerColor.BLUE:
+                playerColorMain = new Color32(93, 134, 203, 255);
+                playerColorSub = new Color32(107, 198, 194, 255);
+                playerBlue.SetActive(true);
+                charaImage.sprite = playerSprites[2];
+                break;
+        }
+
+        subColorTimerBG.color = playerColorSub;
+        subColorCountDownBG.color = playerColorSub;
+        cloud.color = playerColorMain;
+    }
 
     public void AllPanelChangeColor()
     {
@@ -170,12 +229,12 @@ public class StageManager : MonoBehaviour
         {
             comboTimes++;
             isCombo = true;
-            comboTimer = 5.0f;
         }
 
         if (combo)
         {
             isCombo = true;
+            comboTimer = 5.0f;
         }
         else
         {

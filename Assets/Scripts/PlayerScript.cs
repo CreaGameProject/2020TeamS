@@ -91,9 +91,15 @@ public class PlayerScript : MonoBehaviour
                         
                         if (targetDir != mouseCursorHit.collider.gameObject.transform.position - transform.position)
                         {
+                            if (targetDir.y == mouseCursorHit.collider.gameObject.transform.position.y - transform.position.y){
+                                audioSource.PlayOneShot(cursorSE); 
+                            }
+
+
                             targetDir = mouseCursorHit.collider.gameObject.transform.position - transform.position;
-                            audioSource.PlayOneShot(cursorSE);
                         }
+
+
                         float targetAngle = Mathf.Atan2(targetDir.z, targetDir.x);
                         targetAngle = -1 * Mathf.Rad2Deg * targetAngle + 90f;
 
@@ -213,9 +219,6 @@ public class PlayerScript : MonoBehaviour
             {
                 if (hitInfoNowPanel.collider.gameObject.tag == "Panel")
                 {
-
-                    
-
                     if (hitInfoNowPanel.collider.gameObject.GetComponent<PanelScript>().textureNum == playerColorNum)
                     {
                         

@@ -770,7 +770,7 @@ GameObject:
   - component: {fileID: 277269830078337841}
   - component: {fileID: 4879134677346239006}
   m_Layer: 0
-  m_Name: Plane 1
+  m_Name: Panel
   m_TagString: Panel
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
