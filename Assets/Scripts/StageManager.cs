@@ -115,6 +115,8 @@ public class StageManager : MonoBehaviour
             {
                 audioSource.PlayOneShot(whistleSE);
                 isWhistle = false;
+
+                Invoke("Ranking", 2.0f);
             }
         }
         
@@ -255,6 +257,12 @@ public class StageManager : MonoBehaviour
         score += (5 * addPoint + comboTimes) * 20;
 
         
+    }
+
+
+    public void Ranking()
+    {
+        naichilab.RankingLoader.Instance.SendScoreAndShowRanking(score);
     }
 
 }
