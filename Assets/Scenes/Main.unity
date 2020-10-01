@@ -1078,7 +1078,7 @@ MonoBehaviour:
   scoreText: {fileID: 247214197}
   countDownBG: {fileID: 229765351}
   countDownText: {fileID: 1434151368}
-  BGM: {fileID: 8300000, guid: 419978779648cd14a86e51d44532c202, type: 3}
+  BGM: {fileID: 8300000, guid: 615920cea88f2a34395c2d2216942ef1, type: 3}
   countDownSE: {fileID: 8300000, guid: a370cb84685203f4a86789990b7965d9, type: 3}
   whistleSE: {fileID: 8300000, guid: c0be5eef81502d748bc4d85165cb2933, type: 3}
   playerColor: 1

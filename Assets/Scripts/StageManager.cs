@@ -67,6 +67,7 @@ public class StageManager : MonoBehaviour
         if (gameManager != null)
         {
             playerColorNum =  gameManager.GetComponent<GameManagerScript>().playerNumber;
+            gameManager.GetComponent<GameManagerScript>().audioSource.Stop();
         }
 
 
