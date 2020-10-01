@@ -59,8 +59,16 @@ public class StageManager : MonoBehaviour
     private Color playerColorMain;
     private Color playerColorSub;
 
+    
+
     void Start()
     {
+        GameObject gameManager = GameObject.Find("GameManager");
+        if (gameManager != null)
+        {
+            playerColorNum =  gameManager.GetComponent<GameManagerScript>().playerNumber;
+        }
+
 
         SetStageColor();
 
@@ -129,23 +137,23 @@ public class StageManager : MonoBehaviour
     private void SetStageColor()
     {
 
-        switch (playerColor)
+        switch (playerColorNum)
         {
-            case PlayerColor.YELLOW:
+            case 0:
                 playerColorMain = new Color32(255, 206, 140, 255);
                 playerColorSub = new Color32(228, 149, 148, 255);
                 playerYellow.SetActive(true);
                 charaImage.sprite = playerSprites[0];
                 break;
 
-            case PlayerColor.RED:
+            case 1:
                 playerColorMain = new Color32(231, 130, 156, 255);
                 playerColorSub = new Color32(146, 111, 183, 255);
                 playerRed.SetActive(true);
                 charaImage.sprite = playerSprites[1];
                 break;
 
-            case PlayerColor.BLUE:
+            case 2:
                 playerColorMain = new Color32(93, 134, 203, 255);
                 playerColorSub = new Color32(107, 198, 194, 255);
                 playerBlue.SetActive(true);

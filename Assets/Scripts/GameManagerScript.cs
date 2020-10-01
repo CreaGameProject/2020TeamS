@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class GameManagerScript : MonoBehaviour
 {
-    [System.NonSerialized] public static int playerNumber = 0;
+    [System.NonSerialized] public int playerNumber = 0;
 
 
 

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using DG.Tweening;
 
 public class CharaSelectScript : MonoBehaviour
@@ -120,6 +121,22 @@ public class CharaSelectScript : MonoBehaviour
         charaImageYellow.transform.DOMoveX(yellowDefaultPos.x, 0.5f);
         charaImageRed.transform.DOMoveX(redDefaultPos.x, 0.5f);
         charaImageBlue.transform.DOMoveX(blueDefaultPos.x, 0.5f);
+    }
+
+    public void YesButton()
+    {
+        GameObject gameManager = GameObject.Find("GameManager");
+
+        if (gameManager != null)
+        {
+            gameManager.GetComponent<GameManagerScript>().playerNumber = selectNum;
+        }
+        else
+        {
+            Debug.Log("GameManagerが見つかりません。");
+        }
+
+        SceneManager.LoadScene("Main");
     }
 
 }
