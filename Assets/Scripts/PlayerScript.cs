@@ -22,7 +22,7 @@ public class PlayerScript : MonoBehaviour
     private float panelDistance = 1.75f;
     private GameObject[] panel;
     private RaycastHit mouseCursorHit;
-    private Vector3 targetDir;
+    private Vector3 targetDir = new Vector3(0, 0, 0);
 
     [SerializeField] private AudioClip jumpSE;
     [SerializeField] private AudioClip getItemSE;
@@ -78,6 +78,26 @@ public class PlayerScript : MonoBehaviour
         if (stageManager.GetComponent<StageManager>().isGame)
         {
 
+            if (!isMoving) {
+            
+        }
+        else
+        {
+           moveTimer += Time.deltaTime;
+            float location = moveTimer * moveSpeed / panelDistance;
+            transform.position = Vector3.Lerp(moveStart.transform.position, moveGoal.transform.position, location);
+
+            //transform.DOMove(moveGoal.transform.position, 1.2f);
+
+
+            if (transform.position == moveGoal.transform.position)
+            {
+                PanelChecker();
+            }
+        }
+            
+
+
             //StagePanelSelect
             Ray mouseCursorRay = Camera.main.ScreenPointToRay(Input.mousePosition);
 
@@ -104,12 +124,17 @@ public class PlayerScript : MonoBehaviour
                         targetAngle = -1 * Mathf.Rad2Deg * targetAngle + 90f;
                         transform.rotation = Quaternion.Euler(0, targetAngle, 0);
 
+                        moveStart.transform.position = transform.position;
+                        moveGoal.transform.position = transform.position + transform.forward * panelDistance;
+
+                        Debug.Log(targetAngle);
                         
 
                         //Click to move
                         if (Input.GetMouseButtonDown(0))
                         {
                             animator.SetBool("Jump", true);
+
                             isMoving = true;
 
                             for (int i = 0; i < 4; i++)
@@ -158,24 +183,7 @@ public class PlayerScript : MonoBehaviour
 
         }
 
-        if (!isMoving) {
-            moveStart.transform.position = transform.position;
-            moveGoal.transform.position = transform.position + transform.forward * panelDistance;
-        }
-        else
-        {
-           moveTimer += Time.deltaTime;
-            float location = moveTimer * moveSpeed / panelDistance;
-            transform.position = Vector3.Lerp(moveStart.transform.position, moveGoal.transform.position, location);
-
-            //transform.DOMove(moveGoal.transform.position, 1.2f);
-
-
-            if (transform.position == moveGoal.transform.position)
-            {
-                PanelChecker();
-            }
-        }
+        
 
         stageCamera.transform.position = new Vector3(stageCamera.transform.position.x, stageCamera.transform.position.y,transform.position.z - 6.5f);
 
