@@ -104,7 +104,7 @@ public class PlayerScript : MonoBehaviour
                             transform.rotation = Quaternion.Euler(0, targetAngle, 0);
 
                             moveStart.transform.position = transform.position;
-                            moveGoal.transform.position = transform.position + transform.forward * panelDistance;
+                            moveGoal.transform.position = new Vector3(mouseCursorHit.collider.gameObject.transform.position.x, transform.position.y, mouseCursorHit.collider.gameObject.transform.position.z);
 
 
 
