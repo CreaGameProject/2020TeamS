@@ -102,7 +102,6 @@ public class PlayerScript : MonoBehaviour
 
                         float targetAngle = Mathf.Atan2(targetDir.z, targetDir.x);
                         targetAngle = -1 * Mathf.Rad2Deg * targetAngle + 90f;
-
                         transform.rotation = Quaternion.Euler(0, targetAngle, 0);
 
                         
@@ -122,7 +121,7 @@ public class PlayerScript : MonoBehaviour
                             }
 
                             //When go forward
-                            if (targetAngle <= 40.0f && targetAngle >= -40.0f)
+                            if (targetAngle <= 32.0f && targetAngle >= -32.0f)
                             {
                                 RaycastHit hitInfo;
                                 for (int i = 0; i < 5; i++)
@@ -138,7 +137,7 @@ public class PlayerScript : MonoBehaviour
 
                                 stageManager.GetComponent<StageManager>().StartCoroutine("CreateNewPanel");
 
-                                audioSource.PlayOneShot(jumpSE);
+                                
                             }
 
                             RaycastHit raycastHit;
@@ -150,6 +149,8 @@ public class PlayerScript : MonoBehaviour
                                 }
                             }
 
+
+                            audioSource.PlayOneShot(jumpSE);
                         }
                     }
                 }
