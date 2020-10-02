@@ -73,113 +73,112 @@ public class PlayerScript : MonoBehaviour
 
     private void Update()
     {
-
-
         if (stageManager.GetComponent<StageManager>().isGame)
         {
-
-            if (!isMoving) {
-            
-        }
-        else
-        {
-           moveTimer += Time.deltaTime;
-            float location = moveTimer * moveSpeed / panelDistance;
-            transform.position = Vector3.Lerp(moveStart.transform.position, moveGoal.transform.position, location);
-
-            //transform.DOMove(moveGoal.transform.position, 1.2f);
-
-
-            if (transform.position == moveGoal.transform.position)
+            if (!isMoving)
             {
-                PanelChecker();
-            }
-        }
-            
+                Ray mouseCursorRay = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-
-            //StagePanelSelect
-            Ray mouseCursorRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-            if (Physics.Raycast(mouseCursorRay, out mouseCursorHit))
-            {
-                if (mouseCursorHit.collider.gameObject.tag == "Panel")
+                if (Physics.Raycast(mouseCursorRay, out mouseCursorHit))
                 {
-                    if (mouseCursorHit.collider.gameObject.GetComponent<PanelScript>().selectable)
+                    if (mouseCursorHit.collider.gameObject.tag == "Panel")
                     {
-
-                        
-                        if (targetDir != mouseCursorHit.collider.gameObject.transform.position - transform.position)
+                        if (mouseCursorHit.collider.gameObject.GetComponent<PanelScript>().selectable)
                         {
-                            if (targetDir.y == mouseCursorHit.collider.gameObject.transform.position.y - transform.position.y){
-                                audioSource.PlayOneShot(cursorSE); 
-                            }
 
 
-                            targetDir = mouseCursorHit.collider.gameObject.transform.position - transform.position;
-                        }
-
-
-                        float targetAngle = Mathf.Atan2(targetDir.z, targetDir.x);
-                        targetAngle = -1 * Mathf.Rad2Deg * targetAngle + 90f;
-                        transform.rotation = Quaternion.Euler(0, targetAngle, 0);
-
-                        moveStart.transform.position = transform.position;
-                        moveGoal.transform.position = transform.position + transform.forward * panelDistance;
-
-                        Debug.Log(targetAngle);
-                        
-
-                        //Click to move
-                        if (Input.GetMouseButtonDown(0))
-                        {
-                            animator.SetBool("Jump", true);
-
-                            isMoving = true;
-
-                            for (int i = 0; i < 4; i++)
+                            if (targetDir != mouseCursorHit.collider.gameObject.transform.position - transform.position)
                             {
-                                if (panel[i] != null)
+                                if (targetDir.y == mouseCursorHit.collider.gameObject.transform.position.y - transform.position.y)
                                 {
-                                    panel[i].GetComponent<PanelScript>().PanelUP(false);
+                                    audioSource.PlayOneShot(cursorSE);
                                 }
+
+
+                                targetDir = mouseCursorHit.collider.gameObject.transform.position - transform.position;
                             }
 
-                            //When go forward
-                            if (targetAngle <= 32.0f && targetAngle >= -32.0f)
+
+                            float targetAngle = Mathf.Atan2(targetDir.z, targetDir.x);
+                            targetAngle = -1 * Mathf.Rad2Deg * targetAngle + 90f;
+                            transform.rotation = Quaternion.Euler(0, targetAngle, 0);
+
+                            moveStart.transform.position = transform.position;
+                            moveGoal.transform.position = transform.position + transform.forward * panelDistance;
+
+
+
+
+                            //Click to move
+                            if (Input.GetMouseButtonDown(0))
                             {
-                                RaycastHit hitInfo;
-                                for (int i = 0; i < 5; i++)
+                                animator.SetBool("Jump", true);
+
+                                isMoving = true;
+
+                                for (int i = 0; i < 4; i++)
                                 {
-                                    if (Physics.Raycast(new Vector3(0.4375f + i * 1.75f, 1f, transform.position.z), Vector3.down, out hitInfo, 20f))
+                                    if (panel[i] != null)
                                     {
-                                        if (hitInfo.collider.gameObject.tag == "Panel")
-                                        {
-                                            hitInfo.collider.gameObject.GetComponent<PanelScript>().PanelScaleUP(false);
-                                        }
+                                        panel[i].GetComponent<PanelScript>().PanelUP(false);
                                     }
                                 }
 
-                                stageManager.GetComponent<StageManager>().StartCoroutine("CreateNewPanel");
-
-                                
-                            }
-
-                            RaycastHit raycastHit;
-                            if (Physics.Raycast(new Vector3(transform.position.x, transform.position.y - 2f, transform.position.z), Vector3.up, out raycastHit, 20f))
-                            {
-                                if (raycastHit.collider.gameObject.tag == "Panel")
+                                //When go forward
+                                if (targetAngle <= 32.0f && targetAngle >= -32.0f)
                                 {
-                                    raycastHit.collider.gameObject.GetComponent<PanelScript>().PanelScaleUP(false);
+                                    RaycastHit hitInfo;
+                                    for (int i = 0; i < 5; i++)
+                                    {
+                                        if (Physics.Raycast(new Vector3(0.4375f + i * 1.75f, 1f, transform.position.z), Vector3.down, out hitInfo, 20f))
+                                        {
+                                            if (hitInfo.collider.gameObject.tag == "Panel")
+                                            {
+                                                hitInfo.collider.gameObject.GetComponent<PanelScript>().PanelScaleUP(false);
+                                            }
+                                        }
+                                    }
+
+                                    stageManager.GetComponent<StageManager>().StartCoroutine("CreateNewPanel");
+
+
                                 }
+
+                                RaycastHit raycastHit;
+                                if (Physics.Raycast(new Vector3(transform.position.x, transform.position.y - 2f, transform.position.z), Vector3.up, out raycastHit, 20f))
+                                {
+                                    if (raycastHit.collider.gameObject.tag == "Panel")
+                                    {
+                                        raycastHit.collider.gameObject.GetComponent<PanelScript>().PanelScaleUP(false);
+                                    }
+                                }
+
+
+                                audioSource.PlayOneShot(jumpSE);
                             }
-
-
-                            audioSource.PlayOneShot(jumpSE);
                         }
                     }
                 }
             }
+            else
+            {
+                moveTimer += Time.deltaTime;
+                float location = moveTimer * moveSpeed / panelDistance;
+                transform.position = Vector3.Lerp(moveStart.transform.position, moveGoal.transform.position, location);
+
+                //transform.DOMove(moveGoal.transform.position, 1.2f);
+
+
+                if (transform.position == moveGoal.transform.position)
+                {
+                    PanelChecker();
+                }
+            }
+
+
+
+            //StagePanelSelect
+            
 
         }
 
