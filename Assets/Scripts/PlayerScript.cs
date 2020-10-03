@@ -87,6 +87,10 @@ public class PlayerScript : MonoBehaviour
                         {
 
 
+                            moveStart.transform.position = transform.position;
+                            moveGoal.transform.position = new Vector3(mouseCursorHit.collider.gameObject.transform.position.x, transform.position.y, mouseCursorHit.collider.gameObject.transform.position.z);
+
+
                             if (targetDir != mouseCursorHit.collider.gameObject.transform.position - transform.position)
                             {
                                 if (targetDir.y == mouseCursorHit.collider.gameObject.transform.position.y - transform.position.y)
@@ -103,8 +107,7 @@ public class PlayerScript : MonoBehaviour
                             targetAngle = -1 * Mathf.Rad2Deg * targetAngle + 90f;
                             transform.rotation = Quaternion.Euler(0, targetAngle, 0);
 
-                            moveStart.transform.position = transform.position;
-                            moveGoal.transform.position = new Vector3(mouseCursorHit.collider.gameObject.transform.position.x, transform.position.y, mouseCursorHit.collider.gameObject.transform.position.z);
+                            
 
 
 
