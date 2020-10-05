@@ -333,7 +333,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u306F\u306B\u304B\u3080\u3068\u308A\u306B\u3066\u3043\nbeta1.1.0"
+  m_Text: "\u306F\u306B\u304B\u3080\u3068\u308A\u306B\u3066\u3043\nbeta1.1.1"
 --- !u!222 &136507996
 CanvasRenderer:
   m_ObjectHideFlags: 0
