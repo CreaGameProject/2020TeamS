@@ -24,7 +24,8 @@ public class StageManager : MonoBehaviour
     [System.NonSerialized] public bool isCombo;
     [System.NonSerialized] public int comboTimes = 0;
     private float comboTimer = 5.0f;
-    [System.NonSerialized] public int score = 0;
+    [System.NonSerialized] public float score = 0;
+    private float scoreBasePoint = 100;
     [SerializeField] private Text scoreText;
 
     [System.NonSerialized] public bool isGame = false;
@@ -52,13 +53,15 @@ public class StageManager : MonoBehaviour
     [SerializeField] private GameObject playerRed;
     [SerializeField] private GameObject playerBlue;
     [SerializeField] private Sprite[] playerSprites;
+    [SerializeField] private Sprite[] timerSprites;
+    [SerializeField] private Sprite[] countdownSprites;
+    [SerializeField] private Sprite[] cloudSprites;
     [SerializeField] private Image charaImage;
-    [SerializeField] private Image subColorTimerBG;
-    [SerializeField] private Image subColorCountDownBG;
-    [SerializeField] private Image cloud;
-    private Color playerColorMain;
-    private Color playerColorSub;
+    [SerializeField] private Image timerImage;
+    [SerializeField] private Image countdownImage;
+    [SerializeField] private Image cloudImage;
 
+    
     
 
     void Start()
@@ -140,33 +143,42 @@ public class StageManager : MonoBehaviour
     private void SetStageColor()
     {
 
+        
+
         switch (playerColorNum)
         {
             case 0:
-                playerColorMain = new Color32(255, 206, 140, 255);
-                playerColorSub = new Color32(228, 149, 148, 255);
+                //playerColorMain = new Color32(255, 206, 140, 255);
+                //playerColorSub = new Color32(228, 149, 148, 255);
                 playerYellow.SetActive(true);
-                charaImage.sprite = playerSprites[0];
+                
+                
                 break;
 
             case 1:
-                playerColorMain = new Color32(231, 130, 156, 255);
-                playerColorSub = new Color32(146, 111, 183, 255);
+                //playerColorMain = new Color32(231, 130, 156, 255);
+                //playerColorSub = new Color32(146, 111, 183, 255);
                 playerRed.SetActive(true);
                 charaImage.sprite = playerSprites[1];
                 break;
 
             case 2:
-                playerColorMain = new Color32(93, 134, 203, 255);
-                playerColorSub = new Color32(107, 198, 194, 255);
+                //playerColorMain = new Color32(93, 134, 203, 255);
+                //playerColorSub = new Color32(107, 198, 194, 255);
                 playerBlue.SetActive(true);
                 charaImage.sprite = playerSprites[2];
                 break;
         }
 
-        subColorTimerBG.color = playerColorSub;
-        subColorCountDownBG.color = playerColorSub;
-        cloud.color = playerColorMain;
+        charaImage.sprite = playerSprites[playerColorNum];
+        timerImage.sprite = timerSprites[playerColorNum];
+        countdownImage.sprite = countdownSprites[playerColorNum];
+        cloudImage.sprite = cloudSprites[playerColorNum];
+
+
+        //subColorTimerBG.color = playerColorSub;
+        //subColorCountDownBG.color = playerColorSub;
+        //cloud.color = playerColorMain;
     }
 
     public void AllPanelChangeColor()
@@ -178,6 +190,7 @@ public class StageManager : MonoBehaviour
                 panelScript.ChangeTexture();
             }
         }
+        score += scoreBasePoint * 2f;
     }
 
     IEnumerator StageCreate()
@@ -254,7 +267,7 @@ public class StageManager : MonoBehaviour
         }
 
 
-        score += (5 * addPoint + comboTimes) * 20;
+        score += (5 * addPoint + comboTimes) * scoreBasePoint / 5;
 
         
     }
