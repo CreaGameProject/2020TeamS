@@ -22,6 +22,11 @@ public class CharaSelectScript : MonoBehaviour
     private RaycastHit mouseCursorHit;
 
 
+    private float normalScale = 2.0f;
+    private float selectScale = 2.6f;
+    private float selectTime = 0.5f;
+
+
     private void Start()
     {
         yellowDefaultPos = charaImageYellow.transform.position;
@@ -41,33 +46,33 @@ public class CharaSelectScript : MonoBehaviour
                 switch (mouseCursorHit.collider.gameObject.name)
                 {
                     case "sound3":
-                        charaImageYellow.transform.DOScale(1.3f, 0.5f);
-                        charaImageRed.transform.DOScale(1.0f, 0.5f);
-                        charaImageBlue.transform.DOScale(1.0f, 0.5f);
+                        charaImageYellow.transform.DOScale(selectScale, selectTime);
+                        charaImageRed.transform.DOScale(normalScale, selectTime);
+                        charaImageBlue.transform.DOScale(normalScale, selectScale);
 
                         selectNum = 0;
                         break;
 
                     case "programer3":
-                        charaImageRed.transform.DOScale(1.3f, 0.5f);
-                        charaImageYellow.transform.DOScale(1.0f, 0.5f);
-                        charaImageBlue.transform.DOScale(1.0f, 0.5f);
+                        charaImageRed.transform.DOScale(selectScale, selectTime);
+                        charaImageYellow.transform.DOScale(normalScale, selectTime);
+                        charaImageBlue.transform.DOScale(normalScale, selectTime);
 
                         selectNum = 1;
                         break;
 
                     case "desiner3":
-                        charaImageYellow.transform.DOScale(1.0f, 0.5f);
-                        charaImageRed.transform.DOScale(1.0f, 0.5f);
-                        charaImageBlue.transform.DOScale(1.3f, 0.5f);
+                        charaImageYellow.transform.DOScale(normalScale, selectTime);
+                        charaImageRed.transform.DOScale(normalScale, selectTime);
+                        charaImageBlue.transform.DOScale(selectScale, selectTime);
 
                         selectNum = 2;
                         break;
 
                     default:
-                        charaImageYellow.transform.DOScale(1.0f, 0.5f);
-                        charaImageRed.transform.DOScale(1.0f, 0.5f);
-                        charaImageBlue.transform.DOScale(1.0f, 0.5f);
+                        charaImageYellow.transform.DOScale(normalScale, selectTime);
+                        charaImageRed.transform.DOScale(normalScale, selectTime);
+                        charaImageBlue.transform.DOScale(normalScale, selectTime);
 
                         selectNum = -1;
                         break;

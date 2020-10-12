@@ -275,6 +275,8 @@ public class StageManager : MonoBehaviour
 
     public void Ranking()
     {
+        score += playerColorNum;
+
         naichilab.RankingLoader.Instance.SendScoreAndShowRanking(score);
     }
 

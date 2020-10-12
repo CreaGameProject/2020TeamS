@@ -12,11 +12,14 @@ namespace naichilab
         private double score;
         private string format;
 
+        private int charaValue;
+
 
         public NumberScore(double score, string format = "")
         {
             this.score = score;
             this.format = format;
+            //this.charaValue = charaNum;
         }
 
         public ScoreType Type
@@ -48,5 +51,10 @@ namespace naichilab
         {
             get { return score; }
         }
+        /*
+        public　int CharaValue
+        {
+            get { return charaValue; }
+        }*/
     }
 }

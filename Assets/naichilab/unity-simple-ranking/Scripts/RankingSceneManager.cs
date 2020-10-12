@@ -27,6 +27,10 @@ namespace naichilab
         [SerializeField] GameObject notFoundNodePrefab;
         [SerializeField] GameObject unavailableNodePrefab;
 
+        [SerializeField] private Sprite[] charaSprites;
+
+        private int charaNum;
+
         private string _objectid = null;
 
         private string ObjectID
@@ -194,6 +198,7 @@ namespace naichilab
             MaskOffOn();
 
             var so = new YieldableNcmbQuery<NCMBObject>(_board.ClassName);
+
             so.Limit = 30;
             if (_board.Order == ScoreOrder.OrderByAscending)
             {
@@ -222,6 +227,11 @@ namespace naichilab
                     var rankNode = n.GetComponent<RankingNode>();
                     rankNode.NoText.text = (++rank).ToString();
                     rankNode.NameText.text = r[COLUMN_NAME].ToString();
+
+                    rankNode.CharaImage.sprite = charaSprites[(int.Parse(r[COLUMN_SCORE].ToString()) % 10)];
+
+                    
+                    
 
                     var s = _board.BuildScore(r[COLUMN_SCORE].ToString());
                     rankNode.ScoreText.text = s != null ? s.TextForDisplay : "エラー";

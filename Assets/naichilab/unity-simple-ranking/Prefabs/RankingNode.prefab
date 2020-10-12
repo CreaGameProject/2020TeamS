@@ -232,7 +232,7 @@ MonoBehaviour:
   NoText: {fileID: 114202235011567042}
   NameText: {fileID: 114619447008742032}
   ScoreText: {fileID: 114154635248398626}
-  CharaImage: {fileID: 0}
+  CharaImage: {fileID: 3549052981950382042}
 --- !u!1 &1521655238194194
 GameObject:
   m_ObjectHideFlags: 0

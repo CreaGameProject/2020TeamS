@@ -31,7 +31,7 @@ namespace naichilab
 
 
 
-        /*
-        double CharaValue { get; }*/
+        
+        //int CharaValue { get; }
     }
 }
