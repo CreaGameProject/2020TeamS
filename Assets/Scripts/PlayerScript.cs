@@ -175,6 +175,7 @@ public class PlayerScript : MonoBehaviour
                 if (transform.position == moveGoal.transform.position)
                 {
                     PanelChecker();
+                    
                 }
             }
 

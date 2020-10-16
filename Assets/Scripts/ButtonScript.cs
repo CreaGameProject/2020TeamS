@@ -11,5 +11,9 @@ public class ButtonScript : MonoBehaviour
         SceneManager.LoadScene("Select");
     }
     
+    public void ReLoad()
+    {
+        SceneManager.LoadScene("Main");
+    }
     
 }
