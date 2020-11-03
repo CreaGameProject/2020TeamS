@@ -21,6 +21,8 @@ public class PanelScript : MonoBehaviour
     [System.NonSerialized] public bool selectable;
     [System.NonSerialized] public bool panelDisappear;
 
+    [SerializeField] private GameObject particle;
+
 
     private void Start()
     {
@@ -108,6 +110,17 @@ public class PanelScript : MonoBehaviour
         {
             audioSource.PlayOneShot(missSE);
         }
+
         
+    }
+
+    private void Particle()
+    {
+        particle.SetActive(true);
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        Invoke("Particle", 0.2f);
     }
 }
