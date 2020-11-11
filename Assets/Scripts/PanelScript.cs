@@ -6,9 +6,7 @@ using DG.Tweening;
 public class PanelScript : MonoBehaviour
 {
 
-    [System.NonSerialized] public AudioSource audioSource;
-    [SerializeField] private AudioClip matchSE;
-    [SerializeField] private AudioClip missSE;
+    
 
     [SerializeField] private Texture[] textures = new Texture[3];
     [System.NonSerialized] public int textureNum;
@@ -26,7 +24,7 @@ public class PanelScript : MonoBehaviour
 
     private void Start()
     {
-        audioSource = GetComponent<AudioSource>();
+
 
         selectable = false;
         panelDisappear = false;
@@ -100,19 +98,7 @@ public class PanelScript : MonoBehaviour
     }
 
 
-    public void PanelSE(bool match)
-    {
-        if (match)
-        {
-            audioSource.PlayOneShot(matchSE);
-        }
-        else
-        {
-            audioSource.PlayOneShot(missSE);
-        }
 
-        
-    }
 
     private void Particle()
     {

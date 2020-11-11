@@ -465,9 +465,12 @@ MonoBehaviour:
   scoreText: {fileID: 247214197}
   countDownBG: {fileID: 229765351}
   countDownText: {fileID: 1434151368}
-  BGM: {fileID: 8300000, guid: 615920cea88f2a34395c2d2216942ef1, type: 3}
+  stageBGM: {fileID: 8300000, guid: 615920cea88f2a34395c2d2216942ef1, type: 3}
+  rankingBGM: {fileID: 8300000, guid: 0d1802403cee1a449837981411365a30, type: 3}
   countDownSE: {fileID: 8300000, guid: a370cb84685203f4a86789990b7965d9, type: 3}
   whistleSE: {fileID: 8300000, guid: c0be5eef81502d748bc4d85165cb2933, type: 3}
+  matchSE: {fileID: 8300000, guid: d868bc664cb71af4a803153eeb3cc996, type: 3}
+  missSE: {fileID: 8300000, guid: 2cd27f345b0d2cf43aa1d0cfb1e366b9, type: 3}
   playerColor: 1
   playerYellow: {fileID: 1133428896}
   playerRed: {fileID: 815060166}

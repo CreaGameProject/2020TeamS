@@ -29,6 +29,7 @@ public class PlayerScript : MonoBehaviour
     [SerializeField] private AudioClip cursorSE;
 
 
+    private GameObject gameManager;
 
 
     public enum PlayerColor
@@ -45,10 +46,14 @@ public class PlayerScript : MonoBehaviour
 
     private void Start()
     {
+        gameManager = GameObject.Find("GameManager");
+        audioSource = GetComponent<AudioSource>();
+        audioSource.volume = gameManager.GetComponent<GameManagerScript>().voluemSE;
+        //Debug.Log(audioSource.volume);
         animator = GetComponent<Animator>();
         animator.SetBool("Run", true);
 
-        audioSource = GetComponent<AudioSource>();
+       
 
         panel = new GameObject[4];
 
@@ -235,15 +240,17 @@ public class PlayerScript : MonoBehaviour
                     {
                         
                         stageManager.GetComponent<StageManager>().AddScore(3, true);
-                        hitInfoNowPanel.collider.gameObject.GetComponent<PanelScript>().audioSource.pitch = 1.0f + 0.1f * stageManager.GetComponent<StageManager>().comboTimes;
-                        hitInfoNowPanel.collider.gameObject.GetComponent<PanelScript>().PanelSE(true);
+                        stageManager.GetComponent<StageManager>().audioSource.pitch = 1.0f + 0.1f * stageManager.GetComponent<StageManager>().comboTimes;
+                        //hitInfoNowPanel.collider.gameObject.GetComponent<PanelScript>().audioSource.pitch = 1.0f + 0.1f * stageManager.GetComponent<StageManager>().comboTimes;
+                        //hitInfoNowPanel.collider.gameObject.GetComponent<PanelScript>().PanelSE(true);
                     }
                     else
                     {
                         
                         stageManager.GetComponent<StageManager>().AddScore(1, false);
-                        hitInfoNowPanel.collider.gameObject.GetComponent<PanelScript>().audioSource.pitch = 1.0f;
-                        hitInfoNowPanel.collider.gameObject.GetComponent<PanelScript>().PanelSE(false);
+                        //stageManager.GetComponent<StageManager>().audioSource.pitch = 1.0f;
+                        //hitInfoNowPanel.collider.gameObject.GetComponent<PanelScript>().audioSource.pitch = 1.0f;
+                        //hitInfoNowPanel.collider.gameObject.GetComponent<PanelScript>().PanelSE(false);
                     }
                 }
             }

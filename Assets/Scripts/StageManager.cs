@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class StageManager : MonoBehaviour
 {
-    private AudioSource audioSource;
+    [System.NonSerialized] public AudioSource audioSource;
 
     [SerializeField] GameObject plane;
 
@@ -35,9 +35,12 @@ public class StageManager : MonoBehaviour
     [SerializeField] private Text countDownText;
     private bool isWhistle = true;
 
-    [SerializeField] private AudioClip BGM;
+    [SerializeField] private AudioClip stageBGM;
+    [SerializeField] private AudioClip rankingBGM;
     [SerializeField] private AudioClip countDownSE;
     [SerializeField] private AudioClip whistleSE;
+    [SerializeField] private AudioClip matchSE;
+    [SerializeField] private AudioClip missSE;
 
     public enum PlayerColor
     {
@@ -61,12 +64,12 @@ public class StageManager : MonoBehaviour
     [SerializeField] private Image countdownImage;
     [SerializeField] private Image cloudImage;
 
-    
-    
+
+    private GameObject gameManager { get; set; }
 
     void Start()
     {
-        GameObject gameManager = GameObject.Find("GameManager");
+        gameManager = GameObject.Find("GameManager");
         if (gameManager != null)
         {
             playerColorNum =  gameManager.GetComponent<GameManagerScript>().playerNumber;
@@ -80,7 +83,7 @@ public class StageManager : MonoBehaviour
         panelScripts = new List<PanelScript>();
 
         audioSource = GetComponent<AudioSource>();
-
+        audioSource.volume = gameManager.GetComponent<GameManagerScript>().voluemSE;
         audioSource.PlayOneShot(countDownSE);
 
 
@@ -104,7 +107,7 @@ public class StageManager : MonoBehaviour
 
                 isCountDown = false;
                 isGame = true;
-                audioSource.PlayOneShot(BGM);
+                gameManager.GetComponent<AudioSource>().PlayOneShot(stageBGM);
                 countDownBG.SetActive(false);
             }
         }
@@ -259,14 +262,18 @@ public class StageManager : MonoBehaviour
         {
             isCombo = true;
             comboTimer = 5.0f;
+
+            audioSource.PlayOneShot(matchSE);
         }
         else
         {
             comboTimes = 0;
             isCombo = false;
+
+            audioSource.PlayOneShot(missSE);
         }
 
-
+        audioSource.pitch = 1.0f;
         score += (5 * addPoint + comboTimes) * scoreBasePoint / 5;
 
         
@@ -278,6 +285,11 @@ public class StageManager : MonoBehaviour
         score += playerColorNum;
 
         naichilab.RankingLoader.Instance.SendScoreAndShowRanking(score);
+
+        gameManager.GetComponent<AudioSource>().clip = rankingBGM;
+        gameManager.GetComponent<AudioSource>().Play();
+
+
     }
 
 }
