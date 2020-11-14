@@ -83,7 +83,7 @@ public class StageManager : MonoBehaviour
         panelScripts = new List<PanelScript>();
 
         audioSource = GetComponent<AudioSource>();
-        audioSource.volume = gameManager.GetComponent<GameManagerScript>().voluemSE;
+        audioSource.volume = gameManager.GetComponent<GameManagerScript>().volumeSE;
         audioSource.PlayOneShot(countDownSE);
 
 

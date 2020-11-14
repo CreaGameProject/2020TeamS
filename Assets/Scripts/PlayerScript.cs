@@ -48,7 +48,7 @@ public class PlayerScript : MonoBehaviour
     {
         gameManager = GameObject.Find("GameManager");
         audioSource = GetComponent<AudioSource>();
-        audioSource.volume = gameManager.GetComponent<GameManagerScript>().voluemSE;
+        audioSource.volume = gameManager.GetComponent<GameManagerScript>().volumeSE;
         //Debug.Log(audioSource.volume);
         animator = GetComponent<Animator>();
         animator.SetBool("Run", true);
