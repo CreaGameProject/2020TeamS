@@ -5,9 +5,6 @@ using DG.Tweening;
 
 public class PanelScript : MonoBehaviour
 {
-
-    
-
     [SerializeField] private Texture[] textures = new Texture[3];
     [System.NonSerialized] public int textureNum;
 

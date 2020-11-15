@@ -20,10 +20,14 @@ public class GameManagerScript : MonoBehaviour
         volumeSE = 0.2f;
         audioSource = GetComponent<AudioSource>();
 
-        audioSource.volume = volumeBGM;
+        //audioSource.volume = volumeBGM;
 
         DontDestroyOnLoad(this.gameObject);
         SceneManager.LoadScene("Title");
+    }
+
+    private void Update(){
+        audioSource.volume = volumeBGM;
     }
 
 
