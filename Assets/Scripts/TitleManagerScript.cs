@@ -57,6 +57,8 @@ public class TitleManagerScript : MonoBehaviour
         playButton.SetActive(true);
         howToPlayButton.SetActive(true);
         settingButton.SetActive(true);
+
+        gameManagerScript.SaveVolumePlayerPrefs();
     }
 
     

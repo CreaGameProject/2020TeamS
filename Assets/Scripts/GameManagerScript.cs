@@ -16,10 +16,15 @@ public class GameManagerScript : MonoBehaviour
 
     private void Start()
     {
-        volumeBGM = 0.2f;
-        volumeSE = 0.2f;
+        if(PlayerPrefs.GetInt("PLAYED") == 0){
+            volumeBGM = 0.2f;
+            volumeSE = 0.2f;
+            SaveVolumePlayerPrefs();
+            PlayerPrefs.SetInt("PLAYED",1);
+        }
         audioSource = GetComponent<AudioSource>();
 
+        RoadVolumePlayerPrefs();
         //audioSource.volume = volumeBGM;
 
         DontDestroyOnLoad(this.gameObject);
@@ -31,6 +36,16 @@ public class GameManagerScript : MonoBehaviour
         audioSource.volume = volumeBGM;
     }
 
+    public void RoadVolumePlayerPrefs(){
+        volumeBGM = PlayerPrefs.GetFloat("BGM");
+        volumeSE =  PlayerPrefs.GetFloat("SE");
+    }
 
-    
+    public void SaveVolumePlayerPrefs(){
+        PlayerPrefs.SetFloat("BGM",volumeBGM);
+        PlayerPrefs.SetFloat("SE",volumeSE);
+    }
+
+
+
 }
