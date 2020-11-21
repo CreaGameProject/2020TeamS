@@ -26,9 +26,11 @@ public class GameManagerScript : MonoBehaviour
         SceneManager.LoadScene("Title");
     }
 
+
     private void Update(){
         audioSource.volume = volumeBGM;
     }
 
 
+    
 }
