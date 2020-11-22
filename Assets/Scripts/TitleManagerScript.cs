@@ -13,6 +13,8 @@ public class TitleManagerScript : MonoBehaviour
     [SerializeField] private GameObject playButton;
     [SerializeField] private GameObject howToPlayButton;
     [SerializeField] private GameObject settingButton;
+    [SerializeField] private GameObject howToPlay;
+    [SerializeField] private GameObject scrollMaanger;
 
     [SerializeField] private Slider bgmSlider;
     [SerializeField] private Text bgmText;
@@ -59,6 +61,24 @@ public class TitleManagerScript : MonoBehaviour
         settingButton.SetActive(true);
 
         gameManagerScript.SaveVolumePlayerPrefs();
+    }
+
+    public void OnHowToPlayButtonClicked(){
+        settingBackGround.SetActive(true);
+        howToPlay.SetActive(true);
+        scrollMaanger.SetActive(true);
+        playButton.SetActive(false);
+        howToPlayButton.SetActive(false);
+        settingButton.SetActive(false);
+    }
+
+    public void OnHowToPlayCancelButtonClicked(){
+        settingBackGround.SetActive(false);
+        howToPlay.SetActive(false);
+        scrollMaanger.SetActive(false);
+        playButton.SetActive(true);
+        howToPlayButton.SetActive(true);
+        settingButton.SetActive(true);
     }
 
     
