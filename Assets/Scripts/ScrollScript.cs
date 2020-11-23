@@ -36,7 +36,7 @@ public class ScrollScript : MonoBehaviour
         scrollIndexNumber = 1;
         startMarker = new Vector3(0 , 0, 0);
         endMarker = new Vector3(0 , 0, 0);
-        scroll_type = SCROLL_TYPE.BUTTON;
+        scroll_type = SCROLL_TYPE.SCROLL;
     }
 
     void Update(){
