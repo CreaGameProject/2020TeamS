@@ -8,27 +8,20 @@ public class PlayerScript : MonoBehaviour
 
     private Animator animator;
     private AudioSource audioSource;
-
     [SerializeField] private GameObject moveStart;
     [SerializeField] private GameObject moveGoal;
-
     [SerializeField] GameObject stageManager;
     [SerializeField] GameObject stageCamera;
-
     private bool isMoving = false;
     private float moveSpeed = 1.2f;
     private float moveTimer = 0;
-
     private float panelDistance = 1.75f;
     private GameObject[] panel;
     private RaycastHit mouseCursorHit;
     private Vector3 targetDir = new Vector3(0, 0, 0);
-
     [SerializeField] private AudioClip jumpSE;
     [SerializeField] private AudioClip getItemSE;
     [SerializeField] private AudioClip cursorSE;
-
-
     private GameObject gameManager;
 
 

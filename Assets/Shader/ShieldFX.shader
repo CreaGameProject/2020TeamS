@@ -1,23 +1,23 @@
-﻿Shader "Unlit/Shield"
+Shader "Unlit/ShieldFX"
 {
-    Properties
-    {
-        _MainColor("MainColor", Color) = (1, 1, 1, 1)
-        _MainTex ("Texture", 2D) = "white" {}
-        _Fresnel("Fresnel Intensity", Range(0, 200)) = 3.0
-        _FresnelWidth("Fresnel Width", Range(0, 2)) = 2.0
-        _Distort("Distort", Range(0, 100)) = 1.0
-        _IntersectionThreshold("Heighlight of intersection threshold", range(0, 1)) = .1
-        _ScrollSpeedU("Scroll U Speed", float) = 2
-        _ScrollSpeedV("Scroll V Speed", float) = 0
-        //[ToggleOff]_CullOff("Cull Front Side Intersection", float) = 1
-    }
-    SubShader
-    {
-        Tags {"Queue" = "Overlay" "IgnoreProjector" = "True" "RenderType"="Transparent" }
-        
-        GrabPass{"_GrabTexture"}
-        Pass
+	Properties
+	{
+		_MainColor("MainColor", Color) = (1,1,1,1)
+		_MainTex ("Texture", 2D) = "white" {}
+		_Fresnel("Fresnel Intensity", Range(0,200)) = 3.0
+		_FresnelWidth("Fresnel Width", Range(0,2)) = 3.0
+		_Distort("Distort", Range(0, 100)) = 1.0
+		_IntersectionThreshold("Highlight of intersection threshold", range(0,1)) = .1 //Max difference for intersections
+		_ScrollSpeedU("Scroll U Speed",float) = 2
+		_ScrollSpeedV("Scroll V Speed",float) = 0
+		//[ToggleOff]_CullOff("Cull Front Side Intersection",float) = 1
+	}
+	SubShader
+	{ 
+		Tags{ "Queue" = "Overlay" "IgnoreProjector" = "True" "RenderType" = "Transparent" }
+
+		GrabPass{ "_GrabTexture" }
+		Pass
 		{
 			Lighting Off ZWrite On
 			Blend SrcAlpha OneMinusSrcAlpha
@@ -86,7 +86,7 @@
 				main += (1 - intersect) * (face > 0 ? .03:.3) * _MainColor * _Fresnel;
 				return fixed4(main,.9);
 			}
-            ENDCG
-        }
-    }
+			ENDCG
+		}
+	}
 }

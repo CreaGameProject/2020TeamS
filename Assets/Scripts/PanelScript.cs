@@ -21,8 +21,6 @@ public class PanelScript : MonoBehaviour
 
     private void Start()
     {
-
-
         selectable = false;
         panelDisappear = false;
 

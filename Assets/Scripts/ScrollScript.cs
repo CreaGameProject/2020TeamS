@@ -14,7 +14,7 @@ public class ScrollScript : MonoBehaviour
     private Vector3 contentRectPos;
     private Vector3 startMarker;
     private Vector3 endMarker;
-    private float scrollSpeed = 1.0f;
+    private float scrollSpeed = 2.0f;
     private float distance_two;
     private bool isMove;
     private int indexNumber;
@@ -83,17 +83,7 @@ public class ScrollScript : MonoBehaviour
 
         ScrollButtonIndexChecker();
         if(scroll_type == SCROLL_TYPE.BUTTON){
-            /*
-            slerpTimer += Time.deltaTime;
-            float present_Location = (slerpTimer * scrollSpeed)/distance_two;
-            Debug.Log(slerpTimer);
-            if(present_Location < 0.95f){
-                rect.anchoredPosition = Vector3.Lerp(startMarker,endMarker,present_Location);
-            }else{
-                slerpTimer = 0;
-            }*/ 
-            rect.DOLocalMoveX(endMarker.x,1.0f);
-
+            rect.DOLocalMoveX(endMarker.x, 1 / scrollSpeed);
         }
     }
 
