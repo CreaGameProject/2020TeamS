@@ -24,8 +24,10 @@ public class StageManager : MonoBehaviour
     [System.NonSerialized] public bool isCombo;
     [System.NonSerialized] public int comboTimes = 0;
     private float comboTimer = 5.0f;
-    [System.NonSerialized] public float score = 0;
-    private float scoreBasePoint = 100;
+    [System.NonSerialized] public int score = 0;
+    private float displayScore;
+    private float displayScoreAnimeSpeedFactor = 15.0f;
+    private int scoreBasePoint = 100;
     [SerializeField] private Text scoreText;
 
     [System.NonSerialized] public bool isGame = false;
@@ -41,6 +43,7 @@ public class StageManager : MonoBehaviour
     [SerializeField] private AudioClip whistleSE;
     [SerializeField] private AudioClip matchSE;
     [SerializeField] private AudioClip missSE;
+    [SerializeField] private AudioClip maxComboSE;
 
     public enum PlayerColor
     {
@@ -76,17 +79,14 @@ public class StageManager : MonoBehaviour
             gameManager.GetComponent<GameManagerScript>().audioSource.Stop();
         }
 
+        displayScore = score;
 
         SetStageColor();
-
         StartCoroutine("StageCreate");
         panelScripts = new List<PanelScript>();
-
         audioSource = GetComponent<AudioSource>();
         audioSource.volume = gameManager.GetComponent<GameManagerScript>().volumeSE;
         audioSource.PlayOneShot(countDownSE);
-
-
     }
 
     
@@ -103,8 +103,6 @@ public class StageManager : MonoBehaviour
 
             if(countDownTimer <= 0)
             {
-                
-
                 isCountDown = false;
                 isGame = true;
                 gameManager.GetComponent<AudioSource>().PlayOneShot(stageBGM);
@@ -113,12 +111,28 @@ public class StageManager : MonoBehaviour
         }
 
         timerText.text = gameTimer.ToString("f0");
-        scoreText.text = "SCORE:" + score.ToString();
+
+        //現在のスコアと表示用のスコアが異なっていれば、現在のスコアになるまで加算する
+        if(displayScore < score){
+            displayScore += Time.deltaTime * displayScoreAnimeSpeedFactor * Mathf.Abs(score - displayScore);
+        }else if(displayScore > score){
+            displayScore -= Time.deltaTime * displayScoreAnimeSpeedFactor * Mathf.Abs(score - displayScore);
+        }
+
+        //差の絶対値が1未満の場合は同値とみなす
+        if(Mathf.Abs(score - displayScore) < 1.0f){
+            displayScore = (float)score;
+        }
+
+
+        scoreText.text = "SCORE:" + displayScore.ToString("f0");
+        Debug.Log(displayScore + ":" + score);
 
         if(gameTimer <= 0) {
             isGame = false;
             if (isWhistle)
             {
+                audioSource.pitch = 1.0f;
                 audioSource.PlayOneShot(whistleSE);
                 isWhistle = false;
 
@@ -151,23 +165,15 @@ public class StageManager : MonoBehaviour
         switch (playerColorNum)
         {
             case 0:
-                //playerColorMain = new Color32(255, 206, 140, 255);
-                //playerColorSub = new Color32(228, 149, 148, 255);
                 playerYellow.SetActive(true);
-                
-                
                 break;
 
             case 1:
-                //playerColorMain = new Color32(231, 130, 156, 255);
-                //playerColorSub = new Color32(146, 111, 183, 255);
                 playerRed.SetActive(true);
                 charaImage.sprite = playerSprites[1];
                 break;
 
             case 2:
-                //playerColorMain = new Color32(93, 134, 203, 255);
-                //playerColorSub = new Color32(107, 198, 194, 255);
                 playerBlue.SetActive(true);
                 charaImage.sprite = playerSprites[2];
                 break;
@@ -178,10 +184,6 @@ public class StageManager : MonoBehaviour
         countdownImage.sprite = countdownSprites[playerColorNum];
         cloudImage.sprite = cloudSprites[playerColorNum];
 
-
-        //subColorTimerBG.color = playerColorSub;
-        //subColorCountDownBG.color = playerColorSub;
-        //cloud.color = playerColorMain;
     }
 
     public void AllPanelChangeColor()
@@ -193,7 +195,7 @@ public class StageManager : MonoBehaviour
                 panelScript.ChangeTexture();
             }
         }
-        score += scoreBasePoint * 2f;
+        score += scoreBasePoint * 2;
     }
 
     IEnumerator StageCreate()
@@ -262,8 +264,13 @@ public class StageManager : MonoBehaviour
         {
             isCombo = true;
             comboTimer = 5.0f;
+            
 
-            audioSource.PlayOneShot(matchSE);
+            if(comboTimes < 10){
+                audioSource.PlayOneShot(matchSE);
+            }else{
+                audioSource.PlayOneShot(maxComboSE);
+            }
         }
         else
         {

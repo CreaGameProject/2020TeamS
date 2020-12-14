@@ -25,6 +25,11 @@ public class PlayerScript : MonoBehaviour
     private GameObject gameManager;
 
 
+    [ColorUsage(true, true), SerializeField] private Color _comboColor;
+    [SerializeField] private GameObject comboForcefieldObject;
+    
+
+
     public enum PlayerColor
     {
         YELLOW,
@@ -42,11 +47,12 @@ public class PlayerScript : MonoBehaviour
         gameManager = GameObject.Find("GameManager");
         audioSource = GetComponent<AudioSource>();
         audioSource.volume = gameManager.GetComponent<GameManagerScript>().volumeSE;
-        //Debug.Log(audioSource.volume);
         animator = GetComponent<Animator>();
         animator.SetBool("Run", true);
 
-       
+        comboForcefieldObject.GetComponent<Renderer>().material.SetColor("_Emission", _comboColor);
+        Debug.Log(comboForcefieldObject.GetComponent<Renderer>().material);
+        
 
         panel = new GameObject[4];
 
@@ -231,19 +237,24 @@ public class PlayerScript : MonoBehaviour
                 {
                     if (hitInfoNowPanel.collider.gameObject.GetComponent<PanelScript>().textureNum == playerColorNum)
                     {
-                        
                         stageManager.GetComponent<StageManager>().AddScore(3, true);
-                        stageManager.GetComponent<StageManager>().audioSource.pitch = 1.0f + 0.1f * stageManager.GetComponent<StageManager>().comboTimes;
-                        //hitInfoNowPanel.collider.gameObject.GetComponent<PanelScript>().audioSource.pitch = 1.0f + 0.1f * stageManager.GetComponent<StageManager>().comboTimes;
-                        //hitInfoNowPanel.collider.gameObject.GetComponent<PanelScript>().PanelSE(true);
+
+                        int comboTimes = stageManager.GetComponent<StageManager>().comboTimes;
+
+                        if(comboTimes < 10){
+                            stageManager.GetComponent<StageManager>().audioSource.pitch = 1.0f + 0.1f * comboTimes;
+                        }else{
+                            stageManager.GetComponent<StageManager>().audioSource.pitch = 1.0f;
+                        }
+                        
+                        if(stageManager.GetComponent<StageManager>().comboTimes >= 1){
+                            comboForcefieldObject.transform.DOScale(new Vector3(2, 2, 2), 0.5f);
+                        }
                     }
                     else
-                    {
-                        
+                    {   
                         stageManager.GetComponent<StageManager>().AddScore(1, false);
-                        //stageManager.GetComponent<StageManager>().audioSource.pitch = 1.0f;
-                        //hitInfoNowPanel.collider.gameObject.GetComponent<PanelScript>().audioSource.pitch = 1.0f;
-                        //hitInfoNowPanel.collider.gameObject.GetComponent<PanelScript>().PanelSE(false);
+                        comboForcefieldObject.transform.DOScale(new Vector3(0, 0, 0), 0.5f);
                     }
                 }
             }
@@ -265,12 +276,9 @@ public class PlayerScript : MonoBehaviour
         }
     }
 
-
-    public void OnCallChangeFace()
-    {
+    public void OnCallChangeFace(){
 
     }
-
 
 
 }
