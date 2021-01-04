@@ -28,13 +28,20 @@ public class GameManagerScript : MonoBehaviour
         //audioSource.volume = volumeBGM;
 
         DontDestroyOnLoad(this.gameObject);
-        SceneManager.LoadScene("Title");
+        Invoke("GoToTitle",6.0f);
     }
+
+    
 
 
     private void Update(){
         audioSource.volume = volumeBGM;
     }
+
+    private void GoToTitle(){
+        SceneManager.LoadScene("Title");
+    }
+
 
     public void RoadVolumePlayerPrefs(){
         volumeBGM = PlayerPrefs.GetFloat("BGM");
