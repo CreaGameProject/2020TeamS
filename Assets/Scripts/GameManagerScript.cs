@@ -29,6 +29,10 @@ public class GameManagerScript : MonoBehaviour
 
         DontDestroyOnLoad(this.gameObject);
         Invoke("GoToTitle",6.0f);
+
+
+
+        
     }
 
     
