@@ -51,7 +51,7 @@ public class PlayerScript : MonoBehaviour
         animator.SetBool("Run", true);
 
         comboForcefieldObject.GetComponent<Renderer>().material.SetColor("_Emission", _comboColor);
-        Debug.Log(comboForcefieldObject.GetComponent<Renderer>().material);
+        //Debug.Log(comboForcefieldObject.GetComponent<Renderer>().material);
         
 
         panel = new GameObject[4];

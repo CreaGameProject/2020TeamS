@@ -126,7 +126,7 @@ public class StageManager : MonoBehaviour
 
 
         scoreText.text = "SCORE:" + displayScore.ToString("f0");
-        Debug.Log(displayScore + ":" + score);
+        //Debug.Log(displayScore + ":" + score);
 
         if(gameTimer <= 0) {
             isGame = false;
